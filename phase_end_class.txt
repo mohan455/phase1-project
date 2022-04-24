@@ -1,0 +1,10 @@
+namespace phase_end_project
+{
+    internal class Teachers
+    {
+        internal string ID;
+        internal string Name;
+        internal string Class;
+        internal string Section;
+    }
+}

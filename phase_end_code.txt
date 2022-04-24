@@ -1,0 +1,198 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+
+namespace phase_end_project
+{
+    internal class Program
+    {
+        public static void Main(string[] args)
+        {
+            string file = @"D:\Mohan_files\projectW\teachers.txt";
+            if (File.Exists(file))
+            {
+                Console.WriteLine("File Exists");
+                Console.WriteLine("\n 1.Display \n 2.Update \n 3.Delete  \n 4.Search ");
+                Selection();
+            }
+            else
+            {
+                Console.WriteLine("File does not Exists");
+            }
+
+        }
+
+
+
+
+        public static void Selection()
+        {
+
+            Console.WriteLine("\nEnter option for the required operation ");
+
+
+            int option = Convert.ToInt32(Console.ReadLine());
+
+            switch (option)
+            {
+                case 1:
+                    Console.WriteLine("\nDisplaying the file\n");
+                    Display();
+                    break;
+                case 2:
+                    Console.WriteLine("Adding new line to file\n");
+                    Update();
+                    break;
+                case 3:
+                    Console.WriteLine("Deleting a line in text file\n ");
+                    Deleting();
+                    break;
+
+                case 4:
+                    Console.WriteLine("Seaching data in file\n");
+                    Search();
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid input\n");
+                    break;
+            }
+
+        }
+
+
+
+        public static void Display()
+        {
+            String file = @"D:\Mohan_files\projectW\teachers.txt";
+            String[] lines = File.ReadAllLines(file);
+            Array.Sort(lines);
+            foreach (string t in lines)
+            {
+                Console.WriteLine(t + " ");
+            }
+
+
+
+        }
+
+        public static void Update()
+        {
+
+
+            string file = @"D:\Mohan_files\projectW\teachers.txt";
+
+
+            StreamWriter sw = File.AppendText(file);
+
+            Console.WriteLine("Please Enter New Line : ");
+            string NewLine = Console.ReadLine();
+
+
+            sw.WriteLine(NewLine);
+            sw.Close();
+
+
+            StreamReader sr = new StreamReader(file);
+
+            string str = sr.ReadLine();
+
+            {
+                str = sr.ReadLine();
+            }
+
+            Display();
+
+
+        }
+        public static void Deleting()
+        {
+            string file = @"D:\Mohan_files\projectW\teachers.txt";
+            string[] lines = File.ReadAllLines(file);
+            List<Teachers> listTeachers = new List<Teachers>();
+            foreach (string line in lines)
+            {
+                string[] column = line.Split(',');
+
+                Teachers teacher = new Teachers();
+                teacher.ID = column[0];
+                teacher.Name = column[1];
+                teacher.Class = column[2];
+                teacher.Section = column[3];
+                listTeachers.Add(teacher);
+            }
+            Console.WriteLine(file);
+            string id;
+            Console.WriteLine("Enter the id to delete:");
+            id = Console.ReadLine();
+            foreach (Teachers t in listTeachers)
+            {
+                if (t.ID == id)
+                {
+                    listTeachers.Remove(t);
+                    break;
+
+                }
+                else
+                {
+                    Console.WriteLine("enterd id is not there");
+                    break;
+
+
+                }
+            }
+
+            int count = 0;
+            string[] arr = new string[listTeachers.Count];
+            foreach (Teachers t1 in listTeachers)
+            {
+                string s = ($"{t1.ID},{t1.Name},{t1.Class},{t1.Section}");
+                arr[count] = s;
+                count++;
+
+            }
+            File.WriteAllLines(@"D:\Mohan_files\projectW\teachers.txt", arr);
+
+        }
+
+        public static void Search()
+        {
+            List<Teachers> listTeachers = new List<Teachers>();
+            string teacherfile = "D:\\Mohan_files\\projectW\\teachers.txt";
+            string[] arrteacher = System.IO.File.ReadAllLines(teacherfile);
+
+            foreach (string line in arrteacher)
+            {
+                string[] l = line.Split(',');
+                Teachers teacher = new Teachers();
+                teacher.ID = l[0];
+                teacher.Name = l[1];
+                teacher.Class = l[2];
+                teacher.Section = l[3];
+                listTeachers.Add(teacher);
+
+            }
+            Console.WriteLine("enter id:");
+            string id = Console.ReadLine();
+            foreach (Teachers t in listTeachers)
+            {
+                if (t.ID == id)
+                {
+                    Console.WriteLine("given {0} is present in the given file", id);
+                    Console.WriteLine($"{t.ID},{t.Name},{t.Class},{t.Section}");
+                    break;
+
+                }
+                else
+                {
+                    Console.WriteLine("enterd id is not there");
+                    break;
+                }
+            }
+        }
+    }
+}
